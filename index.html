@@ -429,44 +429,39 @@
                         <h2 class="text-[#033a5b] text-2xl md:text-3xl lg:text-[40px] font-semibold leading-tight text-center">
                             Contactează-ne
                         </h2>
-                        
+                        <!-- Success/Error Messages -->
+                        <div id="formSuccess" class="hidden text-green-700 bg-green-100 border border-green-300 rounded p-4 w-full max-w-3xl text-center mb-4">Cererea a fost trimisă cu succes! Vă vom contacta în curând.</div>
+                        <div id="formError" class="hidden text-red-700 bg-red-100 border border-red-300 rounded p-4 w-full max-w-3xl text-center mb-4">A apărut o eroare la trimiterea cererii. Încercați din nou.</div>
                         <!-- Contact Form -->
-                        <form class="w-full max-w-3xl" onsubmit="handleFormSubmit(event)">
+                        <form id="leadForm" class="w-full max-w-3xl">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                                 <!-- First Name -->
                                 <div>
-                                    <label class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Nume*</label>
-                                    <input type="text" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
+                                    <label for="first_name" class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Nume*</label>
+                                    <input id="first_name" name="first_name" type="text" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
                                 </div>
-                                
                                 <!-- Last Name -->
                                 <div>
-                                    <label class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Prenume*</label>
-                                    <input type="text" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
+                                    <label for="last_name" class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Prenume*</label>
+                                    <input id="last_name" name="last_name" type="text" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
                                 </div>
                             </div>
-                            
                             <!-- Email -->
                             <div class="mb-5">
-                                <label class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Email*</label>
-                                <input type="email" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
+                                <label for="email1" class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Email*</label>
+                                <input id="email1" name="email1" type="email" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required />
                             </div>
-                            
                             <!-- Phone -->
                             <div class="mb-5">
-                                <label class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Telefon mobil*</label>
-                                <div class="bg-white px-4 py-3 rounded border border-[#b69d744c] mb-2">
-                                    <span class="text-[#666666] text-sm md:text-base lg:text-[16px]">+40 xxxxxxxxx</span>
-                                </div>
-                                <p class="text-[#666666] text-xs md:text-sm ml-4">Introduceți numărul fără prefixul +40</p>
+                                <label for="phone_mobile" class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-1 ml-4">Telefon mobil*</label>
+                                <input id="phone_mobile" name="phone_mobile" type="tel" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent" required placeholder="712345678" autocomplete="tel" />
+                                <p class="text-[#666666] text-xs md:text-sm ml-4 mt-1">Introduceți numărul fără prefixul +40 (ex: 712345678)</p>
                             </div>
-                            
                             <!-- Additional Details -->
                             <div class="mb-6">
-                                <label class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-2 ml-4">Detalii suplimentare</label>
-                                <textarea class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white h-28 resize-none focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent"></textarea>
+                                <label for="details" class="block text-[#666666] text-sm md:text-base lg:text-[16px] mb-2 ml-4">Detalii suplimentare</label>
+                                <textarea id="details" name="details" class="w-full px-3 py-2.5 border border-[#b69d744c] rounded bg-white h-28 resize-none focus:outline-none focus:ring-2 focus:ring-[#425c7a] focus:border-transparent"></textarea>
                             </div>
-                            
                             <!-- Submit Button -->
                             <div class="text-center">
                                 <button type="submit" class="bg-[#425c7a] text-white text-sm md:text-base font-medium px-7 py-3 rounded-[24px] hover:bg-[#364a63] transition-colors flex items-center gap-2 mx-auto">
@@ -563,5 +558,66 @@
             });
         });
     </script>
+
+    <!-- EspoCRM API integration script for the contact form -->
+<script>
+// Phone number validation and formatting
+const phoneInput = document.getElementById('phone_mobile');
+if (phoneInput) {
+  phoneInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 9) value = value.substring(0, 9);
+    e.target.value = value;
+  });
+  phoneInput.addEventListener('blur', function(e) {
+    // If not 9 digits, show error
+    if (e.target.value.length !== 9) {
+      e.target.setCustomValidity('Numărul trebuie să aibă exact 9 cifre.');
+    } else {
+      e.target.setCustomValidity('');
+    }
+  });
+}
+
+// Form submission
+const leadForm = document.getElementById('leadForm');
+if (leadForm) {
+  leadForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const phoneValue = phoneInput.value.trim();
+    if (phoneValue.length !== 9 || !/^[0-9]{9}$/.test(phoneValue)) {
+      alert('Numărul de telefon trebuie să conțină exact 9 cifre (fără prefixul +40).');
+      phoneInput.focus();
+      return;
+    }
+    const formData = {
+      firstName: document.getElementById('first_name').value.trim(),
+      lastName: document.getElementById('last_name').value.trim(),
+      emailAddress: document.getElementById('email1').value.trim(),
+      phoneNumber: '+40' + phoneValue,
+      details: document.getElementById('details').value.trim()
+    };
+    fetch('https://dardaune.ro/portal/api/v1/LeadCapture/1ff891ff76bbe34bf5454c7a22cf7d43', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      if (response.ok) {
+        leadForm.reset();
+        document.getElementById('formSuccess').classList.remove('hidden');
+        document.getElementById('formError').classList.add('hidden');
+        document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .catch(error => {
+      document.getElementById('formSuccess').classList.add('hidden');
+      document.getElementById('formError').classList.remove('hidden');
+    });
+  });
+}
+</script>
 </body>
 </html>
